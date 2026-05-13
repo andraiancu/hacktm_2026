@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
 
 export const Route = createFileRoute('/')({
@@ -387,6 +387,12 @@ function MainHero({
             <CornerAccents />
             FIND OUT MORE
           </button>
+          <Link
+            to="/spiderfoot"
+            className="mx-auto mt-6 block w-fit text-xs font-bold uppercase tracking-[0.25em] text-red-500 transition-colors hover:text-red-300"
+          >
+            Open SpiderFoot Console
+          </Link>
         </div>
       </section>
 
