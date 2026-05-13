@@ -1,5 +1,6 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 
 export const Route = createFileRoute('/')({
   component: DefenseSimulatedLanding,
@@ -48,6 +49,12 @@ const PHASE_TWO_LINE =
 const INTRO_SESSION_KEY = 'def_sim_intro_seen'
 
 type IntroPhase = 'terminal' | 'wipe' | 'cta' | 'glitch'
+type ScanPayload = {
+  email: string
+  username?: string
+  name?: string
+  phone?: string
+}
 
 function DefenseSimulatedLanding() {
   const Maps = useNavigate()
@@ -182,13 +189,20 @@ function DefenseSimulatedLanding() {
     }
   }, [isIntroActive])
 
-  const handleScan = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
+  const startScan = (_payload: ScanPayload) => {
     void Maps({ to: '/dashboard' })
   }
 
   const scrollToBriefing = () => {
     intelBriefingRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  }
+
+  const handleSkipIntro = () => {
+    setIsTyping(false)
+    setTypingLineIndex(null)
+    sessionStorage.setItem(INTRO_SESSION_KEY, 'true')
+    setHasSeenIntro(true)
+    setIsIntroActive(false)
   }
 
   return (
@@ -203,11 +217,12 @@ function DefenseSimulatedLanding() {
           showCursor={showCursor}
           flickerOpacity={flickerOpacity}
           glitchShift={glitchShift}
+          onSkipIntro={handleSkipIntro}
         />
       ) : (
         <MainHero
           scanInputRef={scanInputRef}
-          onScanSubmit={handleScan}
+          onStartScan={startScan}
           onFindOutMore={scrollToBriefing}
           intelBriefingRef={intelBriefingRef}
         />
@@ -225,6 +240,7 @@ type IntroOverlayProps = {
   showCursor: boolean
   flickerOpacity: number
   glitchShift: { x: number; y: number; sliceTop: number }
+  onSkipIntro: () => void
 }
 
 function IntroOverlay({
@@ -236,55 +252,66 @@ function IntroOverlay({
   showCursor,
   flickerOpacity,
   glitchShift,
+  onSkipIntro,
 }: IntroOverlayProps) {
   return (
     <section className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505] px-6">
-      <div
-        className="relative w-full max-w-4xl overflow-hidden border border-red-900/50 bg-black/85 p-6 shadow-[0_0_30px_rgba(220,38,38,0.12)] md:p-8"
-        style={
-          introPhase === 'glitch'
-            ? { transform: `translate(${glitchShift.x * 0.35}px, ${glitchShift.y * 0.35}px)` }
-            : undefined
-        }
-      >
-        <div className="mb-5 flex items-center justify-between border-b border-red-900/45 pb-3 text-[10px] uppercase tracking-[0.26em] text-white/65">
-          <div className="flex items-center gap-3">
-            <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
-            <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-            <span className="h-1.5 w-1.5 rounded-full bg-red-600/45" />
-            <span className="text-red-500">Sentinel Terminal</span>
+      <div className="flex w-full max-w-4xl flex-col items-center gap-5">
+        <div
+          className="relative w-full overflow-hidden border border-red-900/50 bg-black/85 p-6 shadow-[0_0_30px_rgba(220,38,38,0.12)] md:p-8"
+          style={
+            introPhase === 'glitch'
+              ? { transform: `translate(${glitchShift.x * 0.35}px, ${glitchShift.y * 0.35}px)` }
+              : undefined
+          }
+        >
+          <div className="mb-5 flex items-center justify-between border-b border-red-900/45 pb-3 text-[10px] uppercase tracking-[0.26em] text-white/65">
+            <div className="flex items-center gap-3">
+              <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
+              <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
+              <span className="h-1.5 w-1.5 rounded-full bg-red-600/45" />
+              <span className="text-red-500">Sentinel Terminal</span>
+            </div>
+            <span>Threat Feed / Live</span>
           </div>
-          <span>Threat Feed / Live</span>
-        </div>
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/20" />
-        <div className="pointer-events-none absolute bottom-0 left-3 top-0 w-px bg-red-900/25" />
-        <div className="pointer-events-none absolute bottom-0 right-3 top-0 w-px bg-red-900/25" />
+          <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/20" />
+          <div className="pointer-events-none absolute bottom-0 left-3 top-0 w-px bg-red-900/25" />
+          <div className="pointer-events-none absolute bottom-0 right-3 top-0 w-px bg-red-900/25" />
 
-        {introPhase === 'terminal' || introPhase === 'wipe' ? (
-          <div className="space-y-3 pl-3 text-sm leading-relaxed text-white/85 md:text-lg">
-            {typedTerminalLines.map((line, index) => (
-              <p key={`${index}-${line}`}>
-                <span className="mr-2 text-red-500">&gt;</span>
-                {line || '\u00A0'}
-                {isTyping && showCursor && typingLineIndex === index && (
-                  <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
-                )}
-              </p>
-            ))}
+          {introPhase === 'terminal' || introPhase === 'wipe' ? (
+            <div className="space-y-3 pl-3 text-sm leading-relaxed text-white/85 md:text-lg">
+              {typedTerminalLines.map((line, index) => (
+                <p key={`${index}-${line}`}>
+                  <span className="mr-2 text-red-500">&gt;</span>
+                  {line || '\u00A0'}
+                  {isTyping && showCursor && typingLineIndex === index && (
+                    <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
+                  )}
+                </p>
+              ))}
+            </div>
+          ) : (
+            <p className="pl-3 text-sm leading-relaxed text-white/90 md:text-lg">
+              <span className="mr-2 text-red-500">&gt;</span>
+              {typedMission}
+              {isTyping && showCursor && (
+                <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
+              )}
+            </p>
+          )}
+
+          <div className="mt-5 border-t border-red-900/35 pt-3 text-[10px] uppercase tracking-[0.2em] text-white/45">
+            shell: reconnaissance // status: active
           </div>
-        ) : (
-          <p className="pl-3 text-base leading-relaxed text-white/90 md:text-2xl">
-            <span className="mr-2 text-red-500">&gt;</span>
-            {typedMission}
-            {isTyping && showCursor && (
-              <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
-            )}
-          </p>
-        )}
-
-        <div className="mt-5 border-t border-red-900/35 pt-3 text-[10px] uppercase tracking-[0.2em] text-white/45">
-          shell: reconnaissance // status: active
         </div>
+
+        <button
+          type="button"
+          onClick={onSkipIntro}
+          className="border-0 bg-transparent p-0 font-mono text-xs uppercase underline underline-offset-4 text-slate-600 transition-colors hover:text-white focus-visible:text-red-500"
+        >
+          Skip Intro
+        </button>
       </div>
 
       {(introPhase === 'wipe' || introPhase === 'glitch') && (
@@ -335,17 +362,47 @@ function IntroOverlay({
 
 type MainHeroProps = {
   scanInputRef: RefObject<HTMLInputElement | null>
-  onScanSubmit: (event: FormEvent<HTMLFormElement>) => void
+  onStartScan: (payload: ScanPayload) => void
   onFindOutMore: () => void
   intelBriefingRef: RefObject<HTMLElement | null>
 }
 
 function MainHero({
   scanInputRef,
-  onScanSubmit,
+  onStartScan,
   onFindOutMore,
   intelBriefingRef,
 }: MainHeroProps) {
+  const [email, setEmail] = useState('')
+  const [username, setUsername] = useState('')
+  const [fullName, setFullName] = useState('')
+  const [phone, setPhone] = useState('')
+  const [emailError, setEmailError] = useState('')
+  const [showOptionalFields, setShowOptionalFields] = useState(false)
+
+  const hasValidEmailFormat = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault()
+    const trimmedEmail = email.trim()
+    if (!hasValidEmailFormat(trimmedEmail)) {
+      setEmailError('Please enter a valid email address')
+      return
+    }
+
+    setEmailError('')
+    const payload: ScanPayload = { email: trimmedEmail }
+    const trimmedUsername = username.trim()
+    const trimmedName = fullName.trim()
+    const trimmedPhone = phone.trim()
+
+    if (trimmedUsername) payload.username = trimmedUsername
+    if (trimmedName) payload.name = trimmedName
+    if (trimmedPhone) payload.phone = trimmedPhone
+
+    onStartScan(payload)
+  }
+
   return (
     <>
       <section className="relative z-10 flex min-h-screen items-center bg-[#050505] px-6 py-20 pointer-events-auto">
@@ -361,15 +418,97 @@ function MainHero({
             simulates, and secures your online existence before they do.
           </p>
 
-          <form onSubmit={onScanSubmit} className="mx-auto mt-12 flex max-w-3xl flex-col gap-4 md:flex-row">
-            <div className="relative flex-1">
-              <CornerAccents />
-              <input
-                ref={scanInputRef}
-                type="text"
-                placeholder="EMAIL/USERNAME"
-                className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
-              />
+          <form onSubmit={handleSubmit} noValidate className="mx-auto mt-12 flex max-w-3xl flex-col gap-4 md:flex-row">
+            <div className="flex-1 space-y-4 text-left">
+              <div className="relative">
+                <CornerAccents />
+                <input
+                  ref={scanInputRef}
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value)
+                    if (emailError) {
+                      setEmailError('')
+                    }
+                  }}
+                  placeholder="EMAIL/USERNAME"
+                  className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                />
+              </div>
+              {emailError && (
+                <p className="-mt-1 text-xs text-red-600">Please enter a valid email address</p>
+              )}
+
+              <button
+                type="button"
+                onClick={() => setShowOptionalFields((current) => !current)}
+                className="text-xs font-semibold text-slate-500 transition-colors hover:text-slate-300"
+              >
+                ＋ Add more for a deeper scan
+              </button>
+
+              <AnimatePresence initial={false}>
+                {showOptionalFields && (
+                  <motion.div
+                    key="optional-fields"
+                    initial={{ height: 0, opacity: 0 }}
+                    animate={{ height: 'auto', opacity: 1 }}
+                    exit={{ height: 0, opacity: 0 }}
+                    transition={{ duration: 0.24, ease: 'easeOut' }}
+                    className="overflow-hidden"
+                  >
+                    <div className="space-y-4 pt-2">
+                      <div>
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                          Username
+                        </label>
+                        <input
+                          type="text"
+                          value={username}
+                          onChange={(event) => setUsername(event.target.value)}
+                          placeholder="your username (e.g. johnsmith92)"
+                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                        />
+                        <p className="mt-2 text-xs text-slate-500">
+                          Finds your accounts across 500+ platforms
+                        </p>
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                          Full name
+                        </label>
+                        <input
+                          type="text"
+                          value={fullName}
+                          onChange={(event) => setFullName(event.target.value)}
+                          placeholder="your full name (e.g. John Smith)"
+                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                        />
+                        <p className="mt-2 text-xs text-slate-500">Checks data broker databases</p>
+                      </div>
+
+                      <div>
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                          Phone
+                        </label>
+                        <input
+                          type="text"
+                          value={phone}
+                          onChange={(event) => setPhone(event.target.value)}
+                          placeholder="phone number in international format (+40712...)"
+                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                        />
+                        <p className="mt-2 text-xs text-slate-500">
+                          Checks if your number was exposed in breaches
+                        </p>
+                      </div>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
             <button
               type="submit"

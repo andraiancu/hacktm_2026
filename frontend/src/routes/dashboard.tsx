@@ -1,4 +1,11 @@
 import { createFileRoute } from '@tanstack/react-router'
+import { BreachCard } from '~/components/BreachCard'
+import { DarkWebCard } from '~/components/DarkWebCard'
+import { DataExposureCard } from '~/components/DataExposureCard'
+import { DeepfakeCard } from '~/components/DeepfakeCard'
+import { PhishingCard } from '~/components/PhishingCard'
+import { ShadowAccountsCard } from '~/components/ShadowAccountsCard'
+import { mockThreatProfile } from '~/data/mockData'
 
 const MOCK_DATA = {
   threatScore: 8.2,
@@ -57,6 +64,8 @@ export const Route = createFileRoute('/dashboard')({
 })
 
 function Dashboard() {
+  const threatProfile = mockThreatProfile
+
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#050505] font-mono text-slate-300">
       <div
@@ -140,21 +149,12 @@ function Dashboard() {
         </section>
 
         <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {MOCK_DATA.tacticalCards.map((card) => (
-            <article
-              key={card.title}
-              className="relative border border-white/10 bg-black/60 p-5"
-            >
-              <CornerAccents />
-              <div className="mb-4 flex items-center justify-between">
-                <h3 className="text-sm font-bold uppercase tracking-[0.15em] text-white">
-                  {card.title}
-                </h3>
-                <StatusBadge status={card.status} />
-              </div>
-              <p className="text-sm leading-relaxed text-slate-400">{card.detail}</p>
-            </article>
-          ))}
+          <BreachCard data={threatProfile.breaches} />
+          <DataExposureCard data={threatProfile.dataExposure} />
+          <ShadowAccountsCard data={threatProfile.shadowAccounts} />
+          <DeepfakeCard data={threatProfile.deepfake} />
+          <PhishingCard data={threatProfile.phishing} />
+          <DarkWebCard data={threatProfile.darkWeb} />
         </section>
       </div>
     </div>
@@ -167,22 +167,5 @@ function CornerAccents() {
       <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-red-600" />
       <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-red-600" />
     </>
-  )
-}
-
-function StatusBadge({ status }: { status: 'Critical' | 'High' | 'Medium' }) {
-  const tone =
-    status === 'Critical'
-      ? 'border-red-600/70 text-red-500'
-      : status === 'High'
-        ? 'border-amber-500/60 text-amber-400'
-        : 'border-sky-500/60 text-sky-400'
-
-  return (
-    <span
-      className={`rounded border px-2 py-1 text-[10px] font-bold uppercase tracking-[0.2em] ${tone}`}
-    >
-      {status}
-    </span>
   )
 }
