@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UsersRouteImport } from './routes/users'
+import { Route as ScanningRouteImport } from './routes/scanning'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PostsRouteImport } from './routes/posts'
 import { Route as DeferredRouteImport } from './routes/deferred'
@@ -31,6 +32,11 @@ import { Route as PathlessLayoutNestedLayoutRouteARouteImport } from './routes/_
 const UsersRoute = UsersRouteImport.update({
   id: '/users',
   path: '/users',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ScanningRoute = ScanningRouteImport.update({
+  id: '/scanning',
+  path: '/scanning',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RedirectRoute = RedirectRouteImport.update({
@@ -127,6 +133,7 @@ export interface FileRoutesByFullPath {
   '/deferred': typeof DeferredRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
+  '/scanning': typeof ScanningRoute
   '/users': typeof UsersRouteWithChildren
   '/api/users': typeof ApiUsersRouteWithChildren
   '/posts/$postId': typeof PostsPostIdRoute
@@ -144,6 +151,7 @@ export interface FileRoutesByTo {
   '/dashboard': typeof DashboardRoute
   '/deferred': typeof DeferredRoute
   '/redirect': typeof RedirectRoute
+  '/scanning': typeof ScanningRoute
   '/api/users': typeof ApiUsersRouteWithChildren
   '/posts/$postId': typeof PostsPostIdRoute
   '/users/$userId': typeof UsersUserIdRoute
@@ -163,6 +171,7 @@ export interface FileRoutesById {
   '/deferred': typeof DeferredRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
+  '/scanning': typeof ScanningRoute
   '/users': typeof UsersRouteWithChildren
   '/_pathlessLayout/_nested-layout': typeof PathlessLayoutNestedLayoutRouteWithChildren
   '/api/users': typeof ApiUsersRouteWithChildren
@@ -184,6 +193,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/posts'
     | '/redirect'
+    | '/scanning'
     | '/users'
     | '/api/users'
     | '/posts/$postId'
@@ -201,6 +211,7 @@ export interface FileRouteTypes {
     | '/dashboard'
     | '/deferred'
     | '/redirect'
+    | '/scanning'
     | '/api/users'
     | '/posts/$postId'
     | '/users/$userId'
@@ -219,6 +230,7 @@ export interface FileRouteTypes {
     | '/deferred'
     | '/posts'
     | '/redirect'
+    | '/scanning'
     | '/users'
     | '/_pathlessLayout/_nested-layout'
     | '/api/users'
@@ -240,6 +252,7 @@ export interface RootRouteChildren {
   DeferredRoute: typeof DeferredRoute
   PostsRoute: typeof PostsRouteWithChildren
   RedirectRoute: typeof RedirectRoute
+  ScanningRoute: typeof ScanningRoute
   UsersRoute: typeof UsersRouteWithChildren
   ApiUsersRoute: typeof ApiUsersRouteWithChildren
   PostsPostIdDeepRoute: typeof PostsPostIdDeepRoute
@@ -252,6 +265,13 @@ declare module '@tanstack/react-router' {
       path: '/users'
       fullPath: '/users'
       preLoaderRoute: typeof UsersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/scanning': {
+      id: '/scanning'
+      path: '/scanning'
+      fullPath: '/scanning'
+      preLoaderRoute: typeof ScanningRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/redirect': {
@@ -450,6 +470,7 @@ const rootRouteChildren: RootRouteChildren = {
   DeferredRoute: DeferredRoute,
   PostsRoute: PostsRouteWithChildren,
   RedirectRoute: RedirectRoute,
+  ScanningRoute: ScanningRoute,
   UsersRoute: UsersRouteWithChildren,
   ApiUsersRoute: ApiUsersRouteWithChildren,
   PostsPostIdDeepRoute: PostsPostIdDeepRoute,

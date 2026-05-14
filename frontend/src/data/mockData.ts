@@ -15,6 +15,7 @@ export const mockThreatProfile = {
         date: '2021-06-22',
         dataTypes: ['Email', 'Password hash', 'Job title'],
       },
+
       {
         breach: 'Dropbox',
         date: '2012-07-01',
@@ -28,6 +29,23 @@ export const mockThreatProfile = {
     ],
     aiExplanation:
       'Your LinkedIn breach is the most dangerous. Your job title and email together are enough for a targeted spear-phishing attack. Combined with the Adobe breach from 2013, an attacker can likely guess your current password pattern if you reuse variations.',
+  },
+
+  emailReputation: {
+    score: 8,
+    cardTitle: 'Can Attackers Trust Your Email Reputation?',
+    cardDescription:
+      'We analyzed whether your email appears risky to security systems and threat intel feeds.',
+    domainHealth: 'warning',
+    spoofingRisk: 'high',
+    disposableProviderDetected: false,
+    riskSignals: [
+      'Address appears in 2 public spam complaint datasets.',
+      'Domain has weak anti-spoofing alignment (DMARC policy not strict).',
+      'Mailbox naming pattern is easily guessable from public profiles.',
+    ],
+    aiExplanation:
+      'Your email footprint suggests elevated targeting risk. Weak anti-spoofing controls and prior spam dataset mentions increase the chance your identity is used in impersonation attempts.',
   },
 
   dataExposure: {
@@ -113,6 +131,14 @@ export const mockThreatProfile = {
     ],
     aiExplanation:
       'Your email appearing in a credential dump means criminals have a file with your email and an old password. They run these lists automatically against banks, PayPal, and email providers. If you have reused any password from before 2022 anywhere, change it today.',
+  },
+
+  scanSteps: {
+    dataExposure: 3000,
+    shadowAccounts: 8000,
+    deepfake: 4000,
+    darkWeb: 6000,
+    phishing: 2000,
   },
 } as const
 

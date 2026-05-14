@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { useScanContext } from '~/state/ScanContext'
 
 export const Route = createFileRoute('/')({
   component: DefenseSimulatedLanding,
@@ -58,6 +59,7 @@ type ScanPayload = {
 
 function DefenseSimulatedLanding() {
   const Maps = useNavigate()
+  const { startScan: startScanContext } = useScanContext()
   const intelBriefingRef = useRef<HTMLElement | null>(null)
   const scanInputRef = useRef<HTMLInputElement | null>(null)
 
@@ -189,8 +191,9 @@ function DefenseSimulatedLanding() {
     }
   }, [isIntroActive])
 
-  const startScan = (_payload: ScanPayload) => {
-    void Maps({ to: '/dashboard' })
+  const startScan = (payload: ScanPayload) => {
+    startScanContext(payload.email)
+    void Maps({ to: '/scanning' })
   }
 
   const scrollToBriefing = () => {
