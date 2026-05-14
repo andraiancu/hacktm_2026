@@ -7,6 +7,7 @@ import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
 import * as React from 'react'
 import { DefaultCatchBoundary } from '~/components/DefaultCatchBoundary'
 import { NotFound } from '~/components/NotFound'
+import { ScanProvider } from '~/state/ScanContext'
 import appCss from '~/styles/app.css?url'
 import { seo } from '~/utils/seo'
 
@@ -67,9 +68,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       </head>
       {/* Am setat bg-black aici pentru a evita flash-ul alb la încărcare */}
       <body className="bg-[#050505]">
-        {/* Conținutul paginilor (Landing/Dashboard) se va randa aici */}
-        {children}
-        
+        <ScanProvider>{children}</ScanProvider>
+
         <TanStackRouterDevtools position="bottom-right" />
         <Scripts />
       </body>
