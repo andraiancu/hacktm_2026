@@ -211,7 +211,7 @@ function DefenseSimulatedLanding() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] font-mono text-slate-300 selection:bg-red-600/30">
+    <div className="min-h-screen bg-bg-main font-mono text-text-secondary selection:bg-accent-lime/25">
       {isIntroActive ? (
         <IntroOverlay
           introPhase={introPhase}
@@ -260,52 +260,52 @@ function IntroOverlay({
   onSkipIntro,
 }: IntroOverlayProps) {
   return (
-    <section className="fixed inset-0 z-50 flex items-center justify-center bg-[#050505] px-6">
+    <section className="fixed inset-0 z-50 flex items-center justify-center bg-bg-main px-6">
       <div className="flex w-full max-w-4xl flex-col items-center gap-5">
         <div
-          className="relative w-full overflow-hidden border border-red-900/50 bg-black/85 p-6 shadow-[0_0_30px_rgba(220,38,38,0.12)] md:p-8"
+          className="relative w-full overflow-hidden rounded-2xl border border-white/10 bg-bg-card/90 p-6 backdrop-blur-lg md:p-8"
           style={
             introPhase === 'glitch'
               ? { transform: `translate(${glitchShift.x * 0.35}px, ${glitchShift.y * 0.35}px)` }
               : undefined
           }
         >
-          <div className="mb-5 flex items-center justify-between border-b border-red-900/45 pb-3 text-[10px] uppercase tracking-[0.26em] text-white/65">
+          <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-3 text-[10px] uppercase tracking-[0.26em] text-white/65">
             <div className="flex items-center gap-3">
-              <span className="h-1.5 w-1.5 rounded-full bg-red-600" />
+              <span className="h-1.5 w-1.5 rounded-full bg-accent-lime-soft" />
               <span className="h-1.5 w-1.5 rounded-full bg-white/60" />
-              <span className="h-1.5 w-1.5 rounded-full bg-red-600/45" />
-              <span className="text-red-500">Sentinel Terminal</span>
+              <span className="h-1.5 w-1.5 rounded-full bg-warning/70" />
+              <span className="text-accent-lime-soft">Sentinel Terminal</span>
             </div>
             <span>Threat Feed / Live</span>
           </div>
           <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-white/20" />
-          <div className="pointer-events-none absolute bottom-0 left-3 top-0 w-px bg-red-900/25" />
-          <div className="pointer-events-none absolute bottom-0 right-3 top-0 w-px bg-red-900/25" />
+          <div className="pointer-events-none absolute bottom-0 left-3 top-0 w-px bg-white/10" />
+          <div className="pointer-events-none absolute bottom-0 right-3 top-0 w-px bg-white/10" />
 
           {introPhase === 'terminal' || introPhase === 'wipe' ? (
             <div className="space-y-3 pl-3 text-sm leading-relaxed text-white/85 md:text-lg">
               {typedTerminalLines.map((line, index) => (
                 <p key={`${index}-${line}`}>
-                  <span className="mr-2 text-red-500">&gt;</span>
+                  <span className="mr-2 text-accent-lime-soft">&gt;</span>
                   {line || '\u00A0'}
                   {isTyping && showCursor && typingLineIndex === index && (
-                    <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
+                    <span className="ml-1 inline-block h-[1.05em] w-px bg-accent-lime-soft align-[-0.18em]" />
                   )}
                 </p>
               ))}
             </div>
           ) : (
             <p className="pl-3 text-sm leading-relaxed text-white/90 md:text-lg">
-              <span className="mr-2 text-red-500">&gt;</span>
+              <span className="mr-2 text-accent-lime-soft">&gt;</span>
               {typedMission}
               {isTyping && showCursor && (
-                <span className="ml-1 inline-block h-[1.05em] w-px bg-red-500 align-[-0.18em]" />
+                <span className="ml-1 inline-block h-[1.05em] w-px bg-accent-lime-soft align-[-0.18em]" />
               )}
             </p>
           )}
 
-          <div className="mt-5 border-t border-red-900/35 pt-3 text-[10px] uppercase tracking-[0.2em] text-white/45">
+          <div className="mt-5 border-t border-white/10 pt-3 text-[10px] uppercase tracking-[0.2em] text-white/45">
             shell: reconnaissance // status: active
           </div>
         </div>
@@ -313,7 +313,7 @@ function IntroOverlay({
         <button
           type="button"
           onClick={onSkipIntro}
-          className="border-0 bg-transparent p-0 font-mono text-xs uppercase underline underline-offset-4 text-slate-600 transition-colors hover:text-white focus-visible:text-red-500"
+          className="border-0 bg-transparent p-0 font-mono text-xs uppercase underline underline-offset-4 text-text-muted transition-colors hover:text-text-primary focus-visible:text-accent-lime-soft"
         >
           Skip Intro
         </button>
@@ -414,17 +414,17 @@ function MainHero({
 
   return (
     <>
-      <section className="relative z-10 flex min-h-screen items-center bg-[#050505] px-6 py-20 pointer-events-auto">
+      <section className="pointer-events-auto relative z-10 flex min-h-screen items-center bg-bg-main px-6 py-20">
         <div className="mx-auto w-full max-w-5xl text-center">
           <div className="mb-6 flex justify-end">
             <button
               type="button"
               onClick={() => void navigate({ to: user ? '/account' : '/login' })}
-              className="inline-flex h-11 items-center gap-2 border border-white/20 bg-black/70 px-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-200 transition-colors hover:border-red-600 hover:text-white"
+              className="inline-flex h-11 items-center gap-2 rounded-xl border border-white/10 bg-bg-card/80 px-4 text-xs font-bold uppercase tracking-[0.2em] text-text-secondary backdrop-blur-sm transition-colors hover:border-border-strong/80 hover:text-text-primary"
             >
               {user ? (
                 <>
-                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-red-600/70 bg-black text-[10px] font-black text-red-300">
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-border-strong/80 bg-bg-secondary text-[10px] font-black text-accent-lime-soft">
                     {initials}
                   </span>
                   <span className="max-w-[14ch] truncate">{accountLabel}</span>
@@ -438,13 +438,13 @@ function MainHero({
             </button>
           </div>
 
-          <p className="text-[11px] font-bold uppercase tracking-[0.35em] text-red-600">
+          <p className="text-[11px] font-bold uppercase tracking-[0.35em] text-accent-lime">
             AI POWERED OSINT SCANNER
           </p>
-          <h1 className="mt-5 whitespace-nowrap text-5xl font-black uppercase italic tracking-[0.08em] text-white drop-shadow-[0_0_14px_rgba(220,38,38,0.5)] md:text-8xl">
-            DEFENSE <span className="text-red-600">SIMULATED</span>
+          <h1 className="mt-5 whitespace-nowrap text-5xl font-black uppercase italic tracking-[0.08em] text-text-primary md:text-8xl">
+            DEFENSE <span className="text-accent-lime-soft">SIMULATED</span>
           </h1>
-          <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-slate-400 md:text-base">
+          <p className="mx-auto mt-6 max-w-3xl text-sm leading-relaxed text-text-muted md:text-base">
             Your digital footprint is a map for attackers. This system scans,
             simulates, and secures your online existence before they do.
           </p>
@@ -465,17 +465,17 @@ function MainHero({
                     }
                   }}
                   placeholder="EMAIL/USERNAME"
-                  className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                  className="h-14 w-full rounded-xl border border-white/10 bg-bg-secondary px-4 text-sm font-semibold uppercase tracking-[0.2em] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
                 />
               </div>
               {emailError && (
-                <p className="-mt-1 text-xs text-red-600">Please enter a valid email address</p>
+                <p className="-mt-1 text-xs text-warning">Please enter a valid email address</p>
               )}
 
               <button
                 type="button"
                 onClick={() => setShowOptionalFields((current) => !current)}
-                className="text-xs font-semibold text-slate-500 transition-colors hover:text-slate-300"
+                className="text-xs font-semibold text-text-muted transition-colors hover:text-text-secondary"
               >
                 ＋ Add more for a deeper scan
               </button>
@@ -492,7 +492,7 @@ function MainHero({
                   >
                     <div className="space-y-4 pt-2">
                       <div>
-                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-text-secondary">
                           Username
                         </label>
                         <input
@@ -500,15 +500,15 @@ function MainHero({
                           value={username}
                           onChange={(event) => setUsername(event.target.value)}
                           placeholder="your username (e.g. johnsmith92)"
-                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                          className="h-14 w-full rounded-xl border border-white/10 bg-bg-secondary px-4 text-sm font-semibold uppercase tracking-[0.2em] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
                         />
-                        <p className="mt-2 text-xs text-slate-500">
+                        <p className="mt-2 text-xs text-text-muted">
                           Finds your accounts across 500+ platforms
                         </p>
                       </div>
 
                       <div>
-                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-text-secondary">
                           Full name
                         </label>
                         <input
@@ -516,13 +516,13 @@ function MainHero({
                           value={fullName}
                           onChange={(event) => setFullName(event.target.value)}
                           placeholder="your full name (e.g. John Smith)"
-                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                          className="h-14 w-full rounded-xl border border-white/10 bg-bg-secondary px-4 text-sm font-semibold uppercase tracking-[0.2em] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
                         />
-                        <p className="mt-2 text-xs text-slate-500">Checks data broker databases</p>
+                        <p className="mt-2 text-xs text-text-muted">Checks data broker databases</p>
                       </div>
 
                       <div>
-                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-slate-300">
+                        <label className="mb-1 block text-xs uppercase tracking-[0.2em] text-text-secondary">
                           Phone
                         </label>
                         <input
@@ -530,9 +530,9 @@ function MainHero({
                           value={phone}
                           onChange={(event) => setPhone(event.target.value)}
                           placeholder="phone number in international format (+40712...)"
-                          className="h-14 w-full border border-white/15 bg-black px-4 text-sm font-semibold uppercase tracking-[0.2em] text-white outline-none transition-colors placeholder:text-slate-600 focus:border-red-600"
+                          className="h-14 w-full rounded-xl border border-white/10 bg-bg-secondary px-4 text-sm font-semibold uppercase tracking-[0.2em] text-text-primary outline-none transition-colors placeholder:text-text-muted focus:border-border-strong"
                         />
-                        <p className="mt-2 text-xs text-slate-500">
+                        <p className="mt-2 text-xs text-text-muted">
                           Checks if your number was exposed in breaches
                         </p>
                       </div>
@@ -543,7 +543,7 @@ function MainHero({
             </div>
             <button
               type="submit"
-              className="h-14 border border-red-600 bg-red-600 px-8 text-xs font-black uppercase tracking-[0.3em] text-white transition-all hover:bg-red-700 hover:shadow-[0_0_18px_rgba(220,38,38,0.45)]"
+              className="h-14 rounded-xl border border-border-strong/70 bg-accent-lime px-8 text-xs font-black uppercase tracking-[0.3em] text-bg-deep transition-colors hover:bg-accent-lime-soft"
             >
               INITIATE SCAN
             </button>
@@ -552,31 +552,31 @@ function MainHero({
           <button
             type="button"
             onClick={onFindOutMore}
-            className="relative mx-auto mt-14 block border border-white/15 bg-[#080808] px-8 py-4 text-xs font-bold uppercase tracking-[0.28em] text-slate-300 transition-colors hover:border-red-600 hover:text-white"
+            className="relative mx-auto mt-14 block rounded-xl border border-white/10 bg-bg-card/80 px-8 py-4 text-xs font-bold uppercase tracking-[0.28em] text-text-secondary backdrop-blur-sm transition-colors hover:border-border-strong/80 hover:text-text-primary"
           >
             <CornerAccents />
             FIND OUT MORE
           </button>
           <Link
             to="/spiderfoot"
-            className="mx-auto mt-6 block w-fit text-xs font-bold uppercase tracking-[0.25em] text-red-500 transition-colors hover:text-red-300"
+            className="mx-auto mt-6 block w-fit text-xs font-bold uppercase tracking-[0.25em] text-warning transition-colors hover:text-warning/80"
           >
             Open SpiderFoot Console
           </Link>
         </div>
       </section>
 
-      <section ref={intelBriefingRef} className="bg-[#080808] px-6 py-20">
+      <section ref={intelBriefingRef} className="bg-bg-deep px-6 py-20">
         <div className="mx-auto max-w-6xl space-y-10">
-          <article className="relative border border-white/10 bg-black/45 p-6 md:p-8">
+          <article className="relative rounded-2xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-md md:p-8">
             <CornerAccents />
-            <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-600">
+            <p className="text-xs font-bold uppercase tracking-[0.3em] text-accent-lime">
               Intel Briefing
             </p>
-            <h2 className="mt-3 text-2xl font-black uppercase tracking-[0.08em] text-white md:text-4xl">
+            <h2 className="mt-3 text-2xl font-black uppercase tracking-[0.08em] text-text-primary md:text-4xl">
               The Anatomy of Vulnerability
             </h2>
-            <p className="mt-4 max-w-4xl text-sm leading-relaxed text-slate-400 md:text-base">
+            <p className="mt-4 max-w-4xl text-sm leading-relaxed text-text-muted md:text-base">
               Attackers do not need a single catastrophic leak; they weaponize
               fragments. A public profile, a reused username, and one exposed
               credential together become an operational dossier for intrusion,
@@ -585,20 +585,20 @@ function MainHero({
           </article>
 
           <div>
-            <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-red-600">
+            <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.3em] text-accent-lime">
               Analysis Categories
             </h3>
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               {ANALYSIS_MODULES.map((module) => (
                 <article
                   key={module.title}
-                  className="relative border border-white/10 bg-black/45 p-5"
+                  className="relative rounded-xl border border-white/10 bg-bg-card/80 p-5 backdrop-blur-sm"
                 >
                   <CornerAccents />
-                  <h4 className="text-sm font-bold uppercase tracking-[0.18em] text-white">
+                  <h4 className="text-sm font-bold uppercase tracking-[0.18em] text-text-primary">
                     {module.title}
                   </h4>
-                  <p className="mt-3 text-sm leading-relaxed text-slate-400">
+                  <p className="mt-3 text-sm leading-relaxed text-text-muted">
                     {module.detail}
                   </p>
                 </article>
@@ -607,23 +607,23 @@ function MainHero({
           </div>
 
           <div className="grid gap-4 md:grid-cols-2">
-            <article className="relative border border-white/10 bg-black/45 p-6">
+            <article className="relative rounded-xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-sm">
               <CornerAccents />
-              <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-red-600">
+              <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent-lime">
                 Attack Method: Social Engineering
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              <p className="mt-3 text-sm leading-relaxed text-text-muted">
                 OSINT gives attackers language, timing, and emotional hooks.
                 They tailor scams around employers, events, and relationships to
                 deliver messages that bypass suspicion.
               </p>
             </article>
-            <article className="relative border border-white/10 bg-black/45 p-6">
+            <article className="relative rounded-xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-sm">
               <CornerAccents />
-              <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-red-600">
+              <h3 className="text-xs font-bold uppercase tracking-[0.3em] text-accent-lime">
                 Attack Method: Media Forensics
               </h3>
-              <p className="mt-3 text-sm leading-relaxed text-slate-400">
+              <p className="mt-3 text-sm leading-relaxed text-text-muted">
                 Public voice clips and videos are harvested for model training.
                 Once enough clear samples are collected, threat actors can build
                 deepfake clones for high-trust fraud and account recovery abuse.
@@ -639,8 +639,8 @@ function MainHero({
 function CornerAccents() {
   return (
     <>
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-red-600" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-red-600" />
+      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-border-strong/80" />
+      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-border-strong/80" />
     </>
   )
 }

@@ -110,7 +110,7 @@ export function AddScanCard() {
       : 'social handle (e.g. @alexj)'
 
   return (
-    <article className="rounded-xl border-2 border-dashed border-border bg-bg-card p-5">
+    <article className="rounded-xl border border-white/10 bg-bg-card/80 p-5 backdrop-blur-sm">
       <AnimatePresence mode="wait" initial={false}>
         {inputState ? (
           <motion.div
@@ -125,18 +125,18 @@ export function AddScanCard() {
                 value={inputValue}
                 onChange={(event) => setInputValue(event.target.value)}
                 placeholder={inputPlaceholder}
-                className="w-full rounded-lg border border-border bg-bg-secondary p-3 font-mono text-text-primary outline-none"
+                className="w-full rounded-lg border border-white/10 bg-bg-secondary p-3 font-mono text-text-primary outline-none focus:border-border-strong"
               />
               <button
                 type="submit"
-                className="w-full rounded-lg border border-transparent bg-accent-blue px-3 py-2.5 font-mono text-sm text-black transition-opacity hover:opacity-90"
+                className="w-full rounded-lg border border-border-strong/70 bg-accent-lime px-3 py-2.5 font-mono text-sm text-bg-deep transition-colors hover:bg-accent-lime-soft"
               >
                 Start Scan →
               </button>
               <button
                 type="button"
                 onClick={handleBack}
-                className="text-xs text-muted transition-colors hover:text-text-secondary"
+                className="text-xs text-text-muted transition-colors hover:text-text-secondary"
               >
                 ← back
               </button>
@@ -151,13 +151,13 @@ export function AddScanCard() {
             transition={{ duration: 0.22 }}
           >
             <div className="mb-4 flex flex-col items-center text-center">
-              <Plus className="h-7 w-7 text-accent-blue" />
+              <Plus className="h-7 w-7 text-accent-lime-soft" />
               <p className="mt-2 text-sm text-text-secondary">Add a deeper scan</p>
               <p className="mt-1 text-xs text-text-muted">Choose what to investigate next</p>
             </div>
 
             {availableOptions.length === 0 ? (
-              <p className="text-center text-sm text-accent-green">All scans complete ✓</p>
+              <p className="text-center text-sm text-accent-lime-soft">All scans complete ✓</p>
             ) : (
               <div className="space-y-2">
                 {availableOptions.map((option) => {
@@ -167,14 +167,14 @@ export function AddScanCard() {
                       key={option.cardKey}
                       type="button"
                       onClick={() => handleOptionClick(option)}
-                      className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg bg-bg-secondary hover:bg-bg-hover transition-colors cursor-pointer border border-transparent hover:border-border"
+                      className="flex w-full cursor-pointer items-center gap-3 rounded-lg border border-white/10 bg-bg-secondary/85 px-3 py-2.5 transition-colors hover:border-border-strong/70 hover:bg-bg-hover"
                     >
-                      <Icon className="h-4 w-4 text-accent-blue" />
+                      <Icon className="h-4 w-4 text-accent-lime-soft" />
                       <div className="min-w-0 flex-1 text-left">
                         <p className="text-sm text-text-secondary">{option.label}</p>
-                        {option.extraInput ? <p className="text-xs text-muted">needs username</p> : null}
+                        {option.extraInput ? <p className="text-xs text-text-muted">needs username</p> : null}
                       </div>
-                      <span className="rounded border border-border px-2 py-0.5 text-xs text-text-muted">
+                      <span className="rounded-lg border border-white/10 px-2 py-0.5 text-xs text-text-muted">
                         {option.eta}
                       </span>
                     </button>

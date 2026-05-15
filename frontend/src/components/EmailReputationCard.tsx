@@ -3,10 +3,10 @@ import { ThreatCard } from '~/components/ThreatCard'
 import type { ThreatProfile } from '~/data/mockData'
 
 const TONE = {
-  high: 'bg-red-950 text-red-400',
-  medium: 'bg-amber-950 text-amber-400',
-  low: 'bg-emerald-950 text-emerald-400',
-  warning: 'bg-amber-950 text-amber-400',
+  high: 'border border-red-500/35 bg-red-950/35 text-red-300',
+  medium: 'border border-warning-strong/35 bg-warning-strong/20 text-warning',
+  low: 'border border-accent-lime/35 bg-accent-lime/15 text-accent-lime-soft',
+  warning: 'border border-warning-strong/35 bg-warning-strong/20 text-warning',
 } as const
 
 type EmailReputationCardProps = {
@@ -21,34 +21,38 @@ export function EmailReputationCard({ data }: EmailReputationCardProps) {
       title={emailReputation.cardTitle}
       description={emailReputation.cardDescription}
       score={emailReputation.score}
-      icon={<AtSign className="h-4 w-4 text-violet-400" />}
+      icon={<AtSign className="h-4 w-4 text-warning" />}
       aiExplanation={emailReputation.aiExplanation}
     >
       <div className="space-y-2">
-        <div className="space-y-2 border-b border-white/5 pb-2">
+        <div className="space-y-2 border-b border-white/10 pb-2">
           <div className="flex items-center justify-between gap-3">
-            <p className="font-bold text-slate-200">Domain Health</p>
-            <span className={`rounded px-2 py-0.5 font-mono text-xs uppercase ${TONE[emailReputation.domainHealth]}`}>
+            <p className="font-bold text-text-primary">Domain Health</p>
+            <span
+              className={`rounded-lg px-2 py-0.5 font-mono text-xs uppercase ${TONE[emailReputation.domainHealth]}`}
+            >
               {emailReputation.domainHealth}
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <p className="font-bold text-slate-200">Spoofing Risk</p>
-            <span className={`rounded px-2 py-0.5 font-mono text-xs uppercase ${TONE[emailReputation.spoofingRisk]}`}>
+            <p className="font-bold text-text-primary">Spoofing Risk</p>
+            <span
+              className={`rounded-lg px-2 py-0.5 font-mono text-xs uppercase ${TONE[emailReputation.spoofingRisk]}`}
+            >
               {emailReputation.spoofingRisk}
             </span>
           </div>
           <div className="flex items-center justify-between gap-3">
-            <p className="font-bold text-slate-200">Disposable Provider</p>
-            <p className="text-slate-500">
+            <p className="font-bold text-text-primary">Disposable Provider</p>
+            <p className="text-text-muted">
               {emailReputation.disposableProviderDetected ? 'Detected' : 'Not detected'}
             </p>
           </div>
         </div>
 
         {emailReputation.riskSignals.map((signal) => (
-          <div key={signal} className="space-y-2 border-b border-white/5 pb-2 last:border-b-0 last:pb-0">
-            <p className="text-slate-300">{signal}</p>
+          <div key={signal} className="space-y-2 border-b border-white/10 pb-2 last:border-b-0 last:pb-0">
+            <p className="text-text-secondary">{signal}</p>
           </div>
         ))}
       </div>

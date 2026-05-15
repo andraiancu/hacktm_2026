@@ -15,16 +15,16 @@ export function DataExposureCard({ data }: DataExposureCardProps) {
       title={dataExposure.cardTitle}
       description={dataExposure.cardDescription}
       score={dataExposure.score}
-      icon={<Database className="h-4 w-4 text-amber-400" />}
+      icon={<Database className="h-4 w-4 text-warning" />}
       aiExplanation={dataExposure.aiExplanation}
     >
       <div className="space-y-2">
-        <FieldRow icon={<User className="h-4 w-4 text-slate-500" />} label="Name" value={dataExposure.fields.name} />
-        <FieldRow icon={<MapPin className="h-4 w-4 text-slate-500" />} label="Address" value={dataExposure.fields.address} />
-        <FieldRow icon={<Phone className="h-4 w-4 text-slate-500" />} label="Phone" value={dataExposure.fields.phone} />
-        <FieldRow icon={<Building className="h-4 w-4 text-slate-500" />} label="Employer" value={dataExposure.fields.employer} />
+        <FieldRow icon={<User className="h-4 w-4 text-text-muted" />} label="Name" value={dataExposure.fields.name} />
+        <FieldRow icon={<MapPin className="h-4 w-4 text-text-muted" />} label="Address" value={dataExposure.fields.address} />
+        <FieldRow icon={<Phone className="h-4 w-4 text-text-muted" />} label="Phone" value={dataExposure.fields.phone} />
+        <FieldRow icon={<Building className="h-4 w-4 text-text-muted" />} label="Employer" value={dataExposure.fields.employer} />
       </div>
-      <div className="mt-3 rounded bg-amber-950 px-2 py-2 text-xs text-amber-400">
+      <div className="mt-3 rounded-xl border border-warning-strong/35 bg-warning-strong/20 px-2 py-2 text-xs text-warning">
         This data is legally purchasable by anyone for under $1
       </div>
     </ThreatCard>
@@ -35,8 +35,8 @@ function FieldRow({ icon, label, value }: { icon: ReactNode; label: string; valu
   return (
     <div className="flex items-center gap-2">
       <span>{icon}</span>
-      <span className="text-slate-500">{label}:</span>
-      <span className="font-mono text-sm text-slate-300">{value}</span>
+      <span className="text-text-muted">{label}:</span>
+      <span className="font-mono text-sm text-text-secondary">{value}</span>
     </div>
   )
 }

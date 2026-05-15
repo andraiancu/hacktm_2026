@@ -140,16 +140,16 @@ function SpiderFootConsole() {
   }
 
   return (
-    <div className="min-h-screen bg-[#050505] px-6 py-12 font-mono text-slate-200">
+    <div className="min-h-screen bg-bg-main px-6 py-12 font-mono text-text-secondary">
       <div className="mx-auto w-full max-w-6xl space-y-8">
-        <header className="border-b border-red-900/40 pb-6">
-          <p className="text-xs uppercase tracking-[0.35em] text-red-600">
+        <header className="border-b border-white/10 pb-6">
+          <p className="text-xs uppercase tracking-[0.35em] text-accent-lime">
             SpiderFoot Console
           </p>
-          <h1 className="mt-3 text-3xl font-black uppercase tracking-[0.08em] text-white">
+          <h1 className="mt-3 text-3xl font-black uppercase tracking-[0.08em] text-text-primary">
             Live OSINT Test Harness
           </h1>
-          <p className="mt-3 text-sm text-slate-400">
+          <p className="mt-3 text-sm text-text-muted">
             Modules enabled: sfp__stor_db, sfp_whois.
           </p>
         </header>
@@ -157,24 +157,24 @@ function SpiderFootConsole() {
         <section className="grid gap-6 lg:grid-cols-[1.3fr_1fr]">
           <form
             onSubmit={handleSubmit}
-            className="relative border border-red-900/40 bg-black/60 p-6"
+            className="relative rounded-2xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-md"
           >
             <CornerAccents />
             <div className="space-y-4">
               <div>
-                <label className="text-xs uppercase tracking-[0.25em] text-slate-400">
+                <label className="text-xs uppercase tracking-[0.25em] text-text-muted">
                   Target
                 </label>
                 <input
                   value={target}
                   onChange={(event) => setTarget(event.target.value)}
-                  className="mt-2 h-12 w-full border border-white/10 bg-black px-3 text-sm text-white outline-none focus:border-red-600"
+                  className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-bg-secondary px-3 text-sm text-text-primary outline-none focus:border-border-strong"
                   placeholder="example.com or username"
                 />
               </div>
 
               <div>
-                <label className="text-xs uppercase tracking-[0.25em] text-slate-400">
+                <label className="text-xs uppercase tracking-[0.25em] text-text-muted">
                   Target Type
                 </label>
                 <select
@@ -182,7 +182,7 @@ function SpiderFootConsole() {
                   onChange={(event) =>
                     setTargetType(event.target.value as 'INTERNET_NAME' | 'EMAILADDR' | 'USERNAME')
                   }
-                  className="mt-2 h-12 w-full border border-white/10 bg-black px-3 text-sm text-white outline-none focus:border-red-600"
+                  className="mt-2 h-12 w-full rounded-xl border border-white/10 bg-bg-secondary px-3 text-sm text-text-primary outline-none focus:border-border-strong"
                 >
                   <option value="INTERNET_NAME">INTERNET_NAME</option>
                   <option value="EMAILADDR">EMAILADDR</option>
@@ -193,7 +193,7 @@ function SpiderFootConsole() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="h-12 w-full border border-red-600 bg-red-600 text-xs font-black uppercase tracking-[0.3em] text-white transition-all hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="h-12 w-full rounded-xl border border-border-strong/70 bg-accent-lime text-xs font-black uppercase tracking-[0.3em] text-bg-deep transition-colors hover:bg-accent-lime-soft disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/20 disabled:text-text-muted"
               >
                 {isSubmitting ? 'LAUNCHING' : 'START SCAN'}
               </button>
@@ -204,15 +204,15 @@ function SpiderFootConsole() {
             </div>
           </form>
 
-          <div className="relative border border-white/10 bg-black/60 p-6">
+          <div className="relative rounded-2xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-md">
             <CornerAccents />
-            <p className="text-xs uppercase tracking-[0.25em] text-red-500">Status</p>
+            <p className="text-xs uppercase tracking-[0.25em] text-accent-lime">Status</p>
             <div className="mt-4 space-y-2 text-sm">
-              <p>Scan ID: <span className="text-slate-300">{scanId ?? '—'}</span></p>
-              <p>State: <span className="text-slate-300">{status || 'Idle'}</span></p>
-              <p>Total results: <span className="text-slate-300">{resultCount}</span></p>
+              <p>Scan ID: <span className="text-text-secondary">{scanId ?? '—'}</span></p>
+              <p>State: <span className="text-text-secondary">{status || 'Idle'}</span></p>
+              <p>Total results: <span className="text-text-secondary">{resultCount}</span></p>
             </div>
-            <p className="mt-4 text-xs text-slate-500">
+            <p className="mt-4 text-xs text-text-muted">
               Polling every 2s while the scan is active.
             </p>
           </div>
@@ -220,16 +220,16 @@ function SpiderFootConsole() {
 
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
+            <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-accent-lime">
               Results
             </h2>
-            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+            <span className="text-xs uppercase tracking-[0.2em] text-text-muted">
               Showing {results.length} of {resultCount}
             </span>
           </div>
-          <div className="overflow-hidden border border-white/10 bg-black/60">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-bg-card/80 backdrop-blur-sm">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-white/10 text-slate-400">
+              <thead className="border-b border-white/10 text-text-muted">
                 <tr>
                   <th className="px-4 py-3">Type</th>
                   <th className="px-4 py-3">Data</th>
@@ -240,19 +240,19 @@ function SpiderFootConsole() {
               <tbody>
                 {results.length === 0 ? (
                   <tr>
-                    <td colSpan={4} className="px-4 py-6 text-center text-slate-500">
+                    <td colSpan={4} className="px-4 py-6 text-center text-text-muted">
                       No results yet.
                     </td>
                   </tr>
                 ) : (
                   results.map((row) => (
                     <tr key={row.hash} className="border-b border-white/5">
-                      <td className="px-4 py-3 text-slate-200">{row.type}</td>
-                      <td className="px-4 py-3 text-slate-400">
+                      <td className="px-4 py-3 text-text-primary">{row.type}</td>
+                      <td className="px-4 py-3 text-text-secondary">
                         <span className="block max-w-[480px] truncate">{row.data}</span>
                       </td>
-                      <td className="px-4 py-3 text-slate-400">{row.module}</td>
-                      <td className="px-4 py-3 text-slate-400">{row.risk}</td>
+                      <td className="px-4 py-3 text-text-secondary">{row.module}</td>
+                      <td className="px-4 py-3 text-text-secondary">{row.risk}</td>
                     </tr>
                   ))
                 )}
@@ -263,16 +263,16 @@ function SpiderFootConsole() {
 
         <section className="space-y-4">
           <div className="flex items-center justify-between">
-            <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-red-500">
+            <h2 className="text-sm font-bold uppercase tracking-[0.25em] text-accent-lime">
               Logs
             </h2>
-            <span className="text-xs uppercase tracking-[0.2em] text-slate-500">
+            <span className="text-xs uppercase tracking-[0.2em] text-text-muted">
               {logs.length} entries
             </span>
           </div>
-          <div className="overflow-hidden border border-white/10 bg-black/60">
+          <div className="overflow-hidden rounded-2xl border border-white/10 bg-bg-card/80 backdrop-blur-sm">
             <table className="w-full text-left text-xs">
-              <thead className="border-b border-white/10 text-slate-400">
+              <thead className="border-b border-white/10 text-text-muted">
                 <tr>
                   <th className="px-4 py-3">Type</th>
                   <th className="px-4 py-3">Component</th>
@@ -282,16 +282,16 @@ function SpiderFootConsole() {
               <tbody>
                 {logs.length === 0 ? (
                   <tr>
-                    <td colSpan={3} className="px-4 py-6 text-center text-slate-500">
+                    <td colSpan={3} className="px-4 py-6 text-center text-text-muted">
                       No logs yet.
                     </td>
                   </tr>
                 ) : (
                   logs.map((row) => (
                     <tr key={row.rowid} className="border-b border-white/5">
-                      <td className="px-4 py-3 text-slate-300">{row.type}</td>
-                      <td className="px-4 py-3 text-slate-400">{row.component}</td>
-                      <td className="px-4 py-3 text-slate-400">
+                      <td className="px-4 py-3 text-text-secondary">{row.type}</td>
+                      <td className="px-4 py-3 text-text-secondary">{row.component}</td>
+                      <td className="px-4 py-3 text-text-secondary">
                         <span className="block max-w-[720px] whitespace-pre-wrap break-words">
                           {row.message}
                         </span>
@@ -311,8 +311,8 @@ function SpiderFootConsole() {
 function CornerAccents() {
   return (
     <>
-      <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-red-600" />
-      <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-red-600" />
+      <span className="absolute left-0 top-0 h-3 w-3 border-l border-t border-border-strong/80" />
+      <span className="absolute bottom-0 right-0 h-3 w-3 border-b border-r border-border-strong/80" />
     </>
   )
 }

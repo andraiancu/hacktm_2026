@@ -46,21 +46,21 @@ function AccountPage() {
 
   if (loading) {
     return (
-      <section className="min-h-screen bg-[#050505] px-6 py-16 text-slate-300">
-        <p className="mx-auto max-w-xl text-sm text-slate-400">Checking session...</p>
+      <section className="min-h-screen bg-bg-main px-6 py-16 text-text-secondary">
+        <p className="mx-auto max-w-xl text-sm text-text-muted">Checking session...</p>
       </section>
     )
   }
 
   if (!user) {
     return (
-      <section className="min-h-screen bg-[#050505] px-6 py-16 text-slate-300">
-        <div className="mx-auto max-w-xl border border-white/10 bg-black/50 p-6 md:p-8">
-          <h1 className="text-2xl font-black uppercase tracking-[0.08em] text-white">Account</h1>
-          <p className="mt-4 text-sm text-slate-400">You are not logged in.</p>
+      <section className="min-h-screen bg-bg-main px-6 py-16 text-text-secondary">
+        <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-bg-card/85 p-6 backdrop-blur-md md:p-8">
+          <h1 className="text-2xl font-black uppercase tracking-[0.08em] text-text-primary">Account</h1>
+          <p className="mt-4 text-sm text-text-muted">You are not logged in.</p>
           <Link
             to="/login"
-            className="mt-6 inline-block border border-red-600 bg-red-600 px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-white transition-colors hover:bg-red-700"
+            className="mt-6 inline-block rounded-xl border border-border-strong/70 bg-accent-lime px-5 py-3 text-xs font-black uppercase tracking-[0.24em] text-bg-deep transition-colors hover:bg-accent-lime-soft"
           >
             Go To Login
           </Link>
@@ -70,13 +70,13 @@ function AccountPage() {
   }
 
   return (
-    <section className="min-h-screen bg-[#050505] px-6 py-16 text-slate-300">
-      <div className="mx-auto max-w-xl border border-white/10 bg-black/50 p-6 md:p-8">
-        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-red-600">Account</p>
-        <h1 className="mt-3 text-3xl font-black uppercase tracking-[0.08em] text-white md:text-4xl">
+    <section className="min-h-screen bg-bg-main px-6 py-16 text-text-secondary">
+      <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-bg-card/85 p-6 backdrop-blur-md md:p-8">
+        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent-lime">Account</p>
+        <h1 className="mt-3 text-3xl font-black uppercase tracking-[0.08em] text-text-primary md:text-4xl">
           {user.email}
         </h1>
-        <p className="mt-4 text-sm text-slate-400">
+        <p className="mt-4 text-sm text-text-muted">
           This page currently supports account deletion only.
         </p>
 
@@ -86,7 +86,7 @@ function AccountPage() {
           type="button"
           onClick={() => void handleDeleteAccount()}
           disabled={isDeleting}
-          className="mt-8 h-12 w-full border border-red-600 bg-transparent px-6 text-xs font-black uppercase tracking-[0.24em] text-red-300 transition-colors hover:bg-red-700/20 hover:text-white disabled:cursor-not-allowed disabled:opacity-50"
+          className="mt-8 h-12 w-full rounded-xl border border-red-600 bg-transparent px-6 text-xs font-black uppercase tracking-[0.24em] text-red-300 transition-colors hover:bg-red-700/20 hover:text-text-primary disabled:cursor-not-allowed disabled:opacity-50"
         >
           {isDeleting ? 'Deleting...' : 'Delete Account'}
         </button>

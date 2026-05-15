@@ -9,9 +9,9 @@ const RISK_ORDER = {
 } as const
 
 const RISK_TONE = {
-  high: 'bg-red-950 text-red-400',
-  medium: 'bg-amber-950 text-amber-400',
-  low: 'bg-emerald-950 text-emerald-400',
+  high: 'border border-red-500/35 bg-red-950/35 text-red-300',
+  medium: 'border border-warning-strong/35 bg-warning-strong/20 text-warning',
+  low: 'border border-accent-lime/35 bg-accent-lime/15 text-accent-lime-soft',
 } as const
 
 type ShadowAccountsCardProps = {
@@ -27,15 +27,15 @@ export function ShadowAccountsCard({ data }: ShadowAccountsCardProps) {
       title={shadowAccounts.cardTitle}
       description={shadowAccounts.cardDescription}
       score={shadowAccounts.score}
-      icon={<Ghost className="h-4 w-4 text-slate-400" />}
+      icon={<Ghost className="h-4 w-4 text-text-muted" />}
       aiExplanation={shadowAccounts.aiExplanation}
     >
       <div className="space-y-2">
         {sortedEvents.map((event) => (
-          <div key={`${event.platform}-${event.url}`} className="rounded border border-white/10 p-2">
+          <div key={`${event.platform}-${event.url}`} className="rounded-xl border border-white/10 bg-bg-secondary/45 p-2">
             <div className="mb-1 flex items-center justify-between">
-              <p className="text-slate-200">{event.platform}</p>
-              <span className={`rounded px-2 py-0.5 font-mono text-xs uppercase ${RISK_TONE[event.risk]}`}>
+              <p className="text-text-primary">{event.platform}</p>
+              <span className={`rounded-lg px-2 py-0.5 font-mono text-xs uppercase ${RISK_TONE[event.risk]}`}>
                 {event.risk}
               </span>
             </div>
@@ -44,7 +44,7 @@ export function ShadowAccountsCard({ data }: ShadowAccountsCardProps) {
               target="_blank"
               rel="noreferrer"
               onClick={(event) => event.stopPropagation()}
-              className="break-all text-xs text-sky-400 hover:text-sky-300"
+              className="break-all text-xs text-accent-lime-soft hover:text-accent-lime"
             >
               {event.url}
             </a>

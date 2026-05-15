@@ -67,8 +67,8 @@ function RootDocument({ children }: { children: React.ReactNode }) {
       <head>
         <HeadContent />
       </head>
-      {/* Am setat bg-black aici pentru a evita flash-ul alb la încărcare */}
-      <body className="bg-[#050505]">
+      {/* Am setat un fundal dark aici pentru a evita flash-ul alb la încărcare */}
+      <body className="bg-bg-main text-text-secondary">
         <AuthProvider>
           <ScanProvider>{children}</ScanProvider>
         </AuthProvider>

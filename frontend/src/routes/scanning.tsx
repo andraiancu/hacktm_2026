@@ -73,17 +73,17 @@ function ScanningPage() {
   }, [navigate])
 
   return (
-    <div className="min-h-screen bg-[#050505] px-6 py-20 font-mono text-slate-300">
+    <div className="min-h-screen bg-bg-main px-6 py-20 font-mono text-text-secondary">
       <div className="mx-auto max-w-3xl">
-        <div className="relative border border-white/10 bg-black/45 p-6 md:p-8">
+        <div className="relative rounded-2xl border border-white/10 bg-bg-card/80 p-6 backdrop-blur-md md:p-8">
           <CornerAccents />
-          <p className="text-xs font-bold uppercase tracking-[0.3em] text-red-600">
+          <p className="text-xs font-bold uppercase tracking-[0.3em] text-accent-lime">
             Running analysis
           </p>
-          <h1 className="mt-3 text-2xl font-black uppercase tracking-[0.08em] text-white md:text-4xl">
+          <h1 className="mt-3 text-2xl font-black uppercase tracking-[0.08em] text-text-primary md:text-4xl">
             Initiating Core Checks
           </h1>
-          <p className="mt-4 text-sm leading-relaxed text-slate-400">
+          <p className="mt-4 text-sm leading-relaxed text-text-muted">
             The first two baseline scans are running in parallel while we prepare your dashboard.
           </p>
 
@@ -92,32 +92,25 @@ function ScanningPage() {
               const status = stepStatuses[index]
               const isRunning = status === 'running'
               const isComplete = status === 'complete'
+              const statusTone = isComplete ? 'text-accent-lime-soft' : isRunning ? 'text-warning' : 'text-text-muted'
 
               return (
-                <div key={step.engine} className="border border-white/10 bg-black/50 px-4 py-3">
+                <div key={step.engine} className="rounded-xl border border-white/10 bg-bg-secondary/80 px-4 py-3 backdrop-blur-sm">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-sm font-semibold uppercase tracking-[0.08em] text-white">
+                      <p className="text-sm font-semibold uppercase tracking-[0.08em] text-text-primary">
                         {step.label}
                       </p>
-                      <p className="mt-1 text-xs text-slate-500">{step.engine}</p>
+                      <p className="mt-1 text-xs text-text-muted">{step.engine}</p>
                     </div>
-                    <span
-                      className={`text-xs uppercase tracking-[0.2em] ${
-                        isComplete
-                          ? 'text-emerald-400'
-                          : isRunning
-                            ? 'text-amber-400'
-                            : 'text-slate-500'
-                      }`}
-                    >
+                    <span className={`text-xs uppercase tracking-[0.2em] ${statusTone}`}>
                       {isComplete ? 'complete' : isRunning ? 'running' : 'queued'}
                     </span>
                   </div>
 
-                  <div className="mt-3 h-1.5 bg-white/10">
+                  <div className="mt-3 h-1.5 rounded bg-white/10">
                     <motion.div
-                      className={`h-full ${isComplete ? 'bg-emerald-500' : 'bg-red-600'}`}
+                      className={`h-full rounded ${isComplete ? 'bg-accent-lime-soft' : 'bg-warning'}`}
                       initial={{ width: '0%' }}
                       animate={{ width: isComplete ? '100%' : isRunning ? '100%' : '0%' }}
                       transition={{ duration: isRunning ? STEP_DURATION_MS / 1000 : 0.2, ease: 'linear' }}
@@ -136,8 +129,8 @@ function ScanningPage() {
 function CornerAccents() {
   return (
     <>
-      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-red-600" />
-      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-red-600" />
+      <span className="pointer-events-none absolute left-0 top-0 h-3 w-3 border-l border-t border-border-strong/80" />
+      <span className="pointer-events-none absolute bottom-0 right-0 h-3 w-3 border-b border-r border-border-strong/80" />
     </>
   )
 }
