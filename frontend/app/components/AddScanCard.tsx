@@ -1,3 +1,4 @@
+import { Link } from '@tanstack/react-router'
 import { AnimatePresence, motion } from 'framer-motion'
 import { Database, Ghost, Mail, Plus, Skull, Video } from 'lucide-react'
 import type { ComponentType, FormEvent } from 'react'
@@ -110,7 +111,7 @@ export function AddScanCard() {
       : 'social handle (e.g. @alexj)'
 
   return (
-    <article className="rounded-xl border border-white/10 bg-bg-card/80 p-5 backdrop-blur-sm">
+    <article className="relative rounded-xl border border-white/10 bg-bg-card/80 p-5 backdrop-blur-sm">
       <AnimatePresence mode="wait" initial={false}>
         {inputState ? (
           <motion.div
@@ -182,6 +183,13 @@ export function AddScanCard() {
                 })}
               </div>
             )}
+
+            <Link
+              to="/spiderfoot"
+              className="absolute bottom-3 right-4 text-[10px] font-mono tracking-[0.18em] text-slate-400 transition-colors duration-200 hover:text-[#c6f311]"
+            >
+              Wanna find out more?
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
