@@ -10,6 +10,7 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from spiderfoot_ingestion_router import router as spiderfoot_ingestion_router
 
 def resolve_spiderfoot_dir() -> Path:
     env_override = os.getenv("SPIDERFOOT_DIR")
@@ -81,6 +82,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+app.include_router(spiderfoot_ingestion_router)
 
 
 class ScanRequest(BaseModel):
@@ -140,7 +142,7 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
-@app.post("/scan")
+@app.post("/test-scan")
 def start_scan(payload: ScanRequest) -> dict[str, str]:
     target_type = payload.target_type.strip().upper()
     if target_type not in ALLOWED_TARGET_TYPES:
@@ -214,7 +216,7 @@ def get_scan(scan_id: str, limit: int = 200) -> dict[str, Any]:
         dbh.close()
 
 
-@app.get("/scan/{scan_id}/logs")
+@app.get("/test-scan/{scan_id}/logs")
 def get_scan_logs(
     scan_id: str,
     limit: int = 200,
