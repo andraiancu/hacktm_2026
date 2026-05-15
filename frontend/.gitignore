@@ -1,10 +1,4 @@
-node_modules
-package-lock.json
-yarn.lock
-
-.DS_Store
 .cache
-.env
 .vercel
 .output
 .nitro
@@ -18,5 +12,3 @@ yarn.lock
 /blob-report/
 /playwright/.cache/
 .tanstack
-.venv
-__pycache__
