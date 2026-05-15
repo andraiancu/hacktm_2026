@@ -1,6 +1,8 @@
 import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
 import { useEffect, useRef, useState, type FormEvent, type RefObject } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
+import { UserRound } from 'lucide-react'
+import { useAuth } from '~/state/AuthContext'
 import { useScanContext } from '~/state/ScanContext'
 
 export const Route = createFileRoute('/')({
@@ -376,12 +378,16 @@ function MainHero({
   onFindOutMore,
   intelBriefingRef,
 }: MainHeroProps) {
+  const navigate = useNavigate()
+  const { user, firstName, initials } = useAuth()
   const [email, setEmail] = useState('')
   const [username, setUsername] = useState('')
   const [fullName, setFullName] = useState('')
   const [phone, setPhone] = useState('')
   const [emailError, setEmailError] = useState('')
   const [showOptionalFields, setShowOptionalFields] = useState(false)
+
+  const accountLabel = firstName ?? (user?.email ? user.email.split('@')[0] : 'Account')
 
   const hasValidEmailFormat = (value: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
 
@@ -410,6 +416,28 @@ function MainHero({
     <>
       <section className="relative z-10 flex min-h-screen items-center bg-[#050505] px-6 py-20 pointer-events-auto">
         <div className="mx-auto w-full max-w-5xl text-center">
+          <div className="mb-6 flex justify-end">
+            <button
+              type="button"
+              onClick={() => void navigate({ to: user ? '/account' : '/login' })}
+              className="inline-flex h-11 items-center gap-2 border border-white/20 bg-black/70 px-4 text-xs font-bold uppercase tracking-[0.2em] text-slate-200 transition-colors hover:border-red-600 hover:text-white"
+            >
+              {user ? (
+                <>
+                  <span className="inline-flex h-7 w-7 items-center justify-center rounded-full border border-red-600/70 bg-black text-[10px] font-black text-red-300">
+                    {initials}
+                  </span>
+                  <span className="max-w-[14ch] truncate">{accountLabel}</span>
+                </>
+              ) : (
+                <>
+                  <UserRound className="h-4 w-4" aria-hidden="true" />
+                  <span>Login</span>
+                </>
+              )}
+            </button>
+          </div>
+
           <p className="text-[11px] font-bold uppercase tracking-[0.35em] text-red-600">
             AI POWERED OSINT SCANNER
           </p>

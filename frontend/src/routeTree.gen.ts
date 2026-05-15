@@ -14,9 +14,11 @@ import { Route as SpiderfootRouteImport } from './routes/spiderfoot'
 import { Route as ScanningRouteImport } from './routes/scanning'
 import { Route as RedirectRouteImport } from './routes/redirect'
 import { Route as PostsRouteImport } from './routes/posts'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as DeferredRouteImport } from './routes/deferred'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as CustomScriptDotjsRouteImport } from './routes/customScript[.]js'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as PathlessLayoutRouteImport } from './routes/_pathlessLayout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as UsersIndexRouteImport } from './routes/users.index'
@@ -55,6 +57,11 @@ const PostsRoute = PostsRouteImport.update({
   path: '/posts',
   getParentRoute: () => rootRouteImport,
 } as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DeferredRoute = DeferredRouteImport.update({
   id: '/deferred',
   path: '/deferred',
@@ -68,6 +75,11 @@ const DashboardRoute = DashboardRouteImport.update({
 const CustomScriptDotjsRoute = CustomScriptDotjsRouteImport.update({
   id: '/customScript.js',
   path: '/customScript.js',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const PathlessLayoutRoute = PathlessLayoutRouteImport.update({
@@ -134,9 +146,11 @@ const PathlessLayoutNestedLayoutRouteARoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/dashboard': typeof DashboardRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
   '/scanning': typeof ScanningRoute
@@ -154,9 +168,11 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/account': typeof AccountRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/dashboard': typeof DashboardRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/redirect': typeof RedirectRoute
   '/scanning': typeof ScanningRoute
   '/spiderfoot': typeof SpiderfootRoute
@@ -174,9 +190,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_pathlessLayout': typeof PathlessLayoutRouteWithChildren
+  '/account': typeof AccountRoute
   '/customScript.js': typeof CustomScriptDotjsRoute
   '/dashboard': typeof DashboardRoute
   '/deferred': typeof DeferredRoute
+  '/login': typeof LoginRoute
   '/posts': typeof PostsRouteWithChildren
   '/redirect': typeof RedirectRoute
   '/scanning': typeof ScanningRoute
@@ -197,9 +215,11 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/account'
     | '/customScript.js'
     | '/dashboard'
     | '/deferred'
+    | '/login'
     | '/posts'
     | '/redirect'
     | '/scanning'
@@ -217,9 +237,11 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/account'
     | '/customScript.js'
     | '/dashboard'
     | '/deferred'
+    | '/login'
     | '/redirect'
     | '/scanning'
     | '/spiderfoot'
@@ -236,9 +258,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_pathlessLayout'
+    | '/account'
     | '/customScript.js'
     | '/dashboard'
     | '/deferred'
+    | '/login'
     | '/posts'
     | '/redirect'
     | '/scanning'
@@ -259,9 +283,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PathlessLayoutRoute: typeof PathlessLayoutRouteWithChildren
+  AccountRoute: typeof AccountRoute
   CustomScriptDotjsRoute: typeof CustomScriptDotjsRoute
   DashboardRoute: typeof DashboardRoute
   DeferredRoute: typeof DeferredRoute
+  LoginRoute: typeof LoginRoute
   PostsRoute: typeof PostsRouteWithChildren
   RedirectRoute: typeof RedirectRoute
   ScanningRoute: typeof ScanningRoute
@@ -308,6 +334,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PostsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/deferred': {
       id: '/deferred'
       path: '/deferred'
@@ -327,6 +360,13 @@ declare module '@tanstack/react-router' {
       path: '/customScript.js'
       fullPath: '/customScript.js'
       preLoaderRoute: typeof CustomScriptDotjsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_pathlessLayout': {
@@ -485,9 +525,11 @@ const ApiUsersRouteWithChildren = ApiUsersRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PathlessLayoutRoute: PathlessLayoutRouteWithChildren,
+  AccountRoute: AccountRoute,
   CustomScriptDotjsRoute: CustomScriptDotjsRoute,
   DashboardRoute: DashboardRoute,
   DeferredRoute: DeferredRoute,
+  LoginRoute: LoginRoute,
   PostsRoute: PostsRouteWithChildren,
   RedirectRoute: RedirectRoute,
   ScanningRoute: ScanningRoute,
