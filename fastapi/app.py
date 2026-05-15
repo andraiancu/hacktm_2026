@@ -3,6 +3,7 @@ import multiprocessing as mp
 import os
 import sys
 import threading
+from contextlib import suppress
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
@@ -10,7 +11,13 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
-from spiderfoot_ingestion_router import router as spiderfoot_ingestion_router
+from dotenv import load_dotenv
+from spiderfoot_ingestion_router import (
+    router as spiderfoot_ingestion_router,
+    shutdown_spiderfoot_logging,
+)
+
+load_dotenv(dotenv_path=Path(__file__).resolve().parent / ".env")
 
 def resolve_spiderfoot_dir() -> Path:
     env_override = os.getenv("SPIDERFOOT_DIR")
@@ -135,6 +142,20 @@ def run_scan(scan_id: str, target: str, target_type: str, modules: list[str]) ->
         SpiderFootScanner(scan_name, scan_id, target, target_type, modules, config, start=True)
     except Exception:
         log.exception("Scan failed", extra={"scanId": scan_id})
+
+
+@app.on_event("shutdown")
+def shutdown_logging() -> None:
+    global log_listener
+    if log_listener is not None:
+        with suppress(Exception):
+            log_listener.stop()
+        log_listener = None
+    with suppress(Exception):
+        logging_queue.close()
+    with suppress(Exception):
+        logging_queue.join_thread()
+    shutdown_spiderfoot_logging()
 
 
 @app.get("/health")

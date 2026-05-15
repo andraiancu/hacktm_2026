@@ -6,12 +6,14 @@ import os
 import sys
 import threading
 import time
+from contextlib import suppress
 from functools import lru_cache
 from pathlib import Path
 from typing import Any
 
 from fastapi import APIRouter, HTTPException
 from pydantic import ValidationError
+from supabase import Client, create_client
 
 from spiderfoot_ingestion_models import (
     BreachedDataIngestionResponse,
@@ -49,6 +51,19 @@ GROUP_MODULES = {
     "personal_info": ["sfp__stor_db", "sfp_numverify", "sfp_gravatar"],
 }
 RUNNING_STATUSES = {"CREATED", "RUNNING", "STARTING"}
+SUPABASE_TABLE = "spiderfoot_results"
+
+
+def shutdown_spiderfoot_logging() -> None:
+    global log_listener
+    if log_listener is not None:
+        with suppress(Exception):
+            log_listener.stop()
+        log_listener = None
+    with suppress(Exception):
+        logging_queue.close()
+    with suppress(Exception):
+        logging_queue.join_thread()
 
 
 def resolve_spiderfoot_dir() -> Path:
@@ -62,6 +77,43 @@ def resolve_spiderfoot_dir() -> Path:
             return candidate
 
     return Path(__file__).resolve().parents[1] / "fastapi" / "spiderfoot"
+
+
+@lru_cache(maxsize=1)
+def get_supabase_client() -> Client:
+    supabase_url = os.getenv("SUPABASE_URL")
+    supabase_key = os.getenv("SUPABASE_SECRET_KEY")
+    if not supabase_url or not supabase_key:
+        raise RuntimeError("SUPABASE_URL and SUPABASE_SECRET_KEY must be set")
+    return create_client(supabase_url, supabase_key)
+
+
+def save_group_results(
+    *,
+    scan_id: str,
+    status: str,
+    category: str,
+    target: str,
+    target_type: str,
+    parsed: list[Any],
+    ignored_events: list[SpiderFootRawEvent],
+) -> None:
+    payload = {
+        "scan_id": scan_id,
+        "status": status,
+        "category": category,
+        "target": target,
+        "target_type": target_type,
+        "count": len(parsed),
+        "parsed": [item.model_dump() for item in parsed],
+        "ignored_events": [item.model_dump() for item in ignored_events],
+    }
+    try:
+        client = get_supabase_client()
+        client.table(SUPABASE_TABLE).insert(payload).execute()
+    except Exception as exc:
+        log.exception("Failed to persist SpiderFoot results", extra={"scanId": scan_id})
+        raise HTTPException(status_code=500, detail="Failed to persist SpiderFoot results") from exc
 
 
 def _load_spiderfoot_runtime() -> tuple[Any, Any, Any, Any, Any]:
@@ -239,6 +291,15 @@ def ingest_spiderfoot_results(payload: dict[str, Any]) -> SpiderFootIngestionRes
 @router.post("/ingest/breached-data", response_model=BreachedDataIngestionResponse)
 def ingest_breached_data(payload: SpiderFootGroupScanRequest) -> BreachedDataIngestionResponse:
     scan_id, status, parsed = run_group_scan_and_parse(payload, GROUP_MODULES["breached_data"])
+    save_group_results(
+        scan_id=scan_id,
+        status=status,
+        category="breached_data",
+        target=payload.target.strip(),
+        target_type=payload.target_type.strip().upper(),
+        parsed=parsed.breached_data,
+        ignored_events=parsed.ignored_events,
+    )
     return BreachedDataIngestionResponse(
         scan_id=scan_id,
         status=status,
@@ -251,6 +312,15 @@ def ingest_breached_data(payload: SpiderFootGroupScanRequest) -> BreachedDataIng
 @router.post("/ingest/digital-footprint", response_model=DigitalFootprintIngestionResponse)
 def ingest_digital_footprint(payload: SpiderFootGroupScanRequest) -> DigitalFootprintIngestionResponse:
     scan_id, status, parsed = run_group_scan_and_parse(payload, GROUP_MODULES["digital_footprint"])
+    save_group_results(
+        scan_id=scan_id,
+        status=status,
+        category="digital_footprint",
+        target=payload.target.strip(),
+        target_type=payload.target_type.strip().upper(),
+        parsed=parsed.digital_footprint,
+        ignored_events=parsed.ignored_events,
+    )
     return DigitalFootprintIngestionResponse(
         scan_id=scan_id,
         status=status,
@@ -263,6 +333,15 @@ def ingest_digital_footprint(payload: SpiderFootGroupScanRequest) -> DigitalFoot
 @router.post("/ingest/personal-info", response_model=PersonalInfoIngestionResponse)
 def ingest_personal_info(payload: SpiderFootGroupScanRequest) -> PersonalInfoIngestionResponse:
     scan_id, status, parsed = run_group_scan_and_parse(payload, GROUP_MODULES["personal_info"])
+    save_group_results(
+        scan_id=scan_id,
+        status=status,
+        category="personal_info",
+        target=payload.target.strip(),
+        target_type=payload.target_type.strip().upper(),
+        parsed=parsed.personal_info,
+        ignored_events=parsed.ignored_events,
+    )
     return PersonalInfoIngestionResponse(
         scan_id=scan_id,
         status=status,
