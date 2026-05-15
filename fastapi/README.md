@@ -1,15 +1,27 @@
 # SpiderFoot FastAPI
 
+Install dependencies with `uv` from `fastapi/`:
+
+```
+uv sync
+```
+
+If you also need SpiderFoot runtime dependencies:
+
+```
+uv sync --group spiderfoot
+```
+
 Dev run:
 
 ```
-python -m uvicorn app:app --reload --port 8000
+uv run uvicorn app:app --reload --port 8000
 ```
 
-Install deps from repo root:
+Run tests:
 
 ```
-pip install -r fastapi/requirements.txt
+uv run pytest -q test_deepfake_vulnerability.py
 ```
 
 Optional:
