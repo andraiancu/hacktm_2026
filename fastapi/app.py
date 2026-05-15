@@ -10,6 +10,9 @@ from typing import Any
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel, Field
+from dotenv import load_dotenv
+
+load_dotenv(Path(__file__).resolve().parent / ".env", override=True)
 
 def resolve_spiderfoot_dir() -> Path:
     env_override = os.getenv("SPIDERFOOT_DIR")
@@ -46,7 +49,17 @@ ALLOWED_MODULES = {
     "sfp__stor_db",
     "sfp_whois",
     "sfp_accounts",
+    "sfp_haveibeenpwned",
+    "sfp_emailrep",
+    "sfp_clearbit",
+    #"sfp_hunter",
+    "sfp_gravatar",
+    #"sfp_snov",
+    "sfp_intelx",
+    "sfp_leakix",
+    "sfp_ahmia"
 }
+
 ALLOWED_TARGET_TYPES = {
     "IP_ADDRESS",
     "IPV6_ADDRESS",
@@ -118,7 +131,29 @@ def get_spiderfoot_config() -> dict[str, Any]:
         "_socks3port": "",
         "_socks4user": "",
         "_socks5pwd": "",
+
+        # API Keys for the new modules
+        "sfp_haveibeenpwned.api_key": os.getenv("HIBP_API_KEY", ""),
+        "sfp_emailrep.api_key": os.getenv("EMAILREP_API_KEY", ""),
+        "sfp_hunter.api_key": os.getenv("HUNTER_API_KEY", ""),
+        "sfp_clearbit.api_key": os.getenv("CLEARBIT_API_KEY", ""),
+        "sfp_snov.api_key_client_id": os.getenv("SNOV_CLIENT_ID", ""),
+        "sfp_snov.api_key_client_secret": os.getenv("SNOV_CLIENT_SECRET", ""),
+        "sfp_intelx.api_key": os.getenv("INTELX_API_KEY", ""),
+        "sfp_intelx.base_url": os.getenv("INTELX_BASE_URL", "2.intelx.io"),
+        "sfp_leakix.api_key": os.getenv("LEAKIX_API_KEY", ""),
+        # Modules like sfp_pgp, sfp_gravatar, and sfp_ahmia do not require keys.
     }
+    log.warning("Logging raw API keys to console. Remove before production use.")
+    log.info("HIBP_API_KEY=%s", config["sfp_haveibeenpwned.api_key"])
+    log.info("EMAILREP_API_KEY=%s", config["sfp_emailrep.api_key"])
+    log.info("HUNTER_API_KEY=%s", config["sfp_hunter.api_key"])
+    log.info("CLEARBIT_API_KEY=%s", config["sfp_clearbit.api_key"])
+    log.info("SNOV_CLIENT_ID=%s", config["sfp_snov.api_key_client_id"])
+    log.info("SNOV_CLIENT_SECRET=%s", config["sfp_snov.api_key_client_secret"])
+    log.info("INTELX_API_KEY=%s", config["sfp_intelx.api_key"])
+    log.info("INTELX_BASE_URL=%s", config["sfp_intelx.base_url"])
+    log.info("LEAKIX_API_KEY=%s", config["sfp_leakix.api_key"])
     return config
 
 

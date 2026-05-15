@@ -1,3 +1,4 @@
 -r spiderfoot/requirements.txt
 fastapi
 uvicorn[standard]
+python-dotenv
