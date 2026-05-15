@@ -185,7 +185,7 @@ export function AddScanCard() {
             )}
 
             <Link
-              to="/spiderfoot"
+              to="/login"
               className="absolute bottom-3 right-4 text-[10px] font-mono tracking-[0.18em] text-slate-400 transition-colors duration-200 hover:text-[#c6f311]"
             >
               Wanna find out more?

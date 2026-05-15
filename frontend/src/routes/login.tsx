@@ -1,7 +1,5 @@
-import { Link, createFileRoute, useNavigate } from '@tanstack/react-router'
-import { useEffect, useState, type FormEvent } from 'react'
-import { useAuth } from '~/state/AuthContext'
-import { supabase } from '~/utils/supabase'
+import { createFileRoute, useNavigate } from '@tanstack/react-router'
+import { useState, type FormEvent } from 'react'
 
 export const Route = createFileRoute('/login')({
   component: LoginPage,
@@ -9,120 +7,65 @@ export const Route = createFileRoute('/login')({
 
 function LoginPage() {
   const navigate = useNavigate()
-  const { user, isConfigured } = useAuth()
-
   const [email, setEmail] = useState('')
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
 
-  useEffect(() => {
-    if (user) {
-      void navigate({ to: '/account' })
-    }
-  }, [navigate, user])
-
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
-
-    const trimmedEmail = email.trim()
-    if (!trimmedEmail) {
-      setError('Please enter your email address.')
-      setMessage('')
-      return
-    }
-
-    if (!supabase) {
-      setError('Supabase auth is not configured. Set VITE_SUPABASE_URL and VITE_SUPABASE_KEY.')
-      setMessage('')
-      return
-    }
-
-    setIsSubmitting(true)
-    setError('')
-    setMessage('')
-
-    const redirectUrl =
-      import.meta.env.VITE_SUPABASE_REDIRECT_URL?.trim() ||
-      (typeof window !== 'undefined' ? `${window.location.origin}/account` : undefined)
-
-    const { error: signInError } = await supabase.auth.signInWithOtp({
-      email: trimmedEmail,
-      options: redirectUrl ? { emailRedirectTo: redirectUrl } : undefined,
-    })
-
-    if (signInError) {
-      setError(signInError.message)
-      setMessage('')
-      setIsSubmitting(false)
-      return
-    }
-
-    setMessage('Magic link sent. Check your inbox and open the link on this device.')
-    setIsSubmitting(false)
+    void navigate({ to: '/deeper-scan/details' })
   }
 
   return (
-    <section className="min-h-screen bg-bg-main px-6 py-16 text-text-secondary">
-      <div className="mx-auto max-w-xl rounded-2xl border border-white/10 bg-bg-card/85 p-6 backdrop-blur-md md:p-8">
-        <p className="text-[11px] font-bold uppercase tracking-[0.3em] text-accent-lime">Sentinel Access</p>
-        <h1 className="mt-3 text-3xl font-black uppercase tracking-[0.08em] text-text-primary md:text-4xl">
-          Login With Magic Link
-        </h1>
-        <p className="mt-4 text-sm text-text-muted">
-          Enter your email and we will send you a secure one-time sign-in link.
-        </p>
-
-        {!isConfigured && (
-          <p className="mt-4 rounded-lg border border-warning-strong/40 bg-warning-strong/20 px-3 py-2 text-xs text-warning">
-            Supabase is not configured in this environment.
-          </p>
-        )}
-
-        <form onSubmit={handleSubmit} className="mt-8 space-y-4" noValidate>
-          <div>
-            <label
-              htmlFor="auth-email"
-              className="mb-2 block text-xs uppercase tracking-[0.2em] text-slate-300"
-            >
-              Email Address
-            </label>
-            <input
-              id="auth-email"
-              type="email"
-              autoComplete="email"
-              value={email}
-              onChange={(event) => {
-                setEmail(event.target.value)
-                if (error) {
-                  setError('')
-                }
-              }}
-              className="h-12 w-full rounded-xl border border-white/10 bg-bg-secondary px-4 text-sm text-text-primary outline-none placeholder:text-text-muted focus:border-border-strong"
-              placeholder="you@example.com"
-              required
-            />
-          </div>
-
-          {error && <p className="text-sm text-red-400">{error}</p>}
-          {message && <p className="text-sm text-accent-lime-soft">{message}</p>}
-
-          <button
-            type="submit"
-            disabled={isSubmitting || !isConfigured}
-            className="h-12 w-full rounded-xl border border-border-strong/70 bg-accent-lime px-6 text-xs font-black uppercase tracking-[0.24em] text-bg-deep transition-colors hover:bg-accent-lime-soft disabled:cursor-not-allowed disabled:border-white/10 disabled:bg-white/20 disabled:text-text-muted"
-          >
-            {isSubmitting ? 'Sending...' : 'Send Magic Link'}
-          </button>
-        </form>
-
-        <Link
-          to="/"
-          className="mt-6 inline-block text-xs font-bold uppercase tracking-[0.2em] text-text-muted transition-colors hover:text-text-primary"
+    <main className="min-h-screen px-6 py-10 text-white" style={{ backgroundColor: '#101319' }}>
+      <div className="flex min-h-[calc(100vh-5rem)] items-center justify-center">
+        <section
+          className="w-full max-w-md rounded-xl border border-white/10 bg-[rgba(29,32,38,0.8)] p-8 backdrop-blur-xl"
+          aria-labelledby="login-title"
         >
-          Back To Landing
-        </Link>
+          <p className="font-mono text-[11px] uppercase tracking-[0.35em] text-[#c6f311]">
+            SECURE ACCESS
+          </p>
+          <h1 id="login-title" className="mt-3 text-3xl font-semibold text-white">
+            Register or sign in
+          </h1>
+          <p className="mt-2 text-sm text-slate-300">Enter your email to continue your privacy scan</p>
+
+          <form onSubmit={handleSubmit} className="mt-8 space-y-5">
+            <div className="space-y-2">
+              <label
+                htmlFor="email"
+                className="block font-mono text-[11px] uppercase tracking-[0.28em] text-slate-300"
+              >
+                Email
+              </label>
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                value={email}
+                onChange={(event) => setEmail(event.target.value)}
+                placeholder="you@example.com"
+                className="h-12 w-full rounded-xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-[#c6f311]/60 focus:ring-2 focus:ring-[#c6f311]/15"
+                required
+              />
+            </div>
+
+            <p className="text-xs text-slate-400">
+              No password needed. We'll use your email to start or continue your scan.
+            </p>
+
+            <button
+              type="submit"
+              className="h-12 w-full rounded-xl bg-[#c6f311] text-sm font-semibold text-[#101319] transition hover:bg-[#d9ff43]"
+            >
+              Continue with email
+            </button>
+
+            <p className="text-[10px] text-slate-500 text-center">
+              You'll be redirected to the deeper scan page.
+            </p>
+          </form>
+        </section>
       </div>
-    </section>
+    </main>
   )
 }
