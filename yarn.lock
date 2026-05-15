@@ -1792,6 +1792,36 @@ __metadata:
   languageName: node
   linkType: hard
 
+"frontend@workspace:frontend":
+  version: 0.0.0-use.local
+  resolution: "frontend@workspace:frontend"
+  dependencies:
+    "@tailwindcss/postcss": "npm:^4.3.0"
+    "@tailwindcss/vite": "npm:^4.2.2"
+    "@tanstack/react-query": "npm:^5.100.10"
+    "@tanstack/react-router": "npm:^1.169.2"
+    "@tanstack/react-router-devtools": "npm:^1.166.13"
+    "@tanstack/react-start": "npm:^1.167.65"
+    "@types/node": "npm:^22.5.4"
+    "@types/react": "npm:^19.0.8"
+    "@types/react-dom": "npm:^19.0.3"
+    "@vitejs/plugin-react": "npm:^6.0.1"
+    autoprefixer: "npm:^10.5.0"
+    framer-motion: "npm:^12.38.0"
+    lucide-react: "npm:^1.14.0"
+    nitro: "npm:^3.0.260311-beta"
+    postcss: "npm:^8.5.14"
+    react: "npm:^19.0.0"
+    react-dom: "npm:^19.0.0"
+    recharts: "npm:^3.8.1"
+    tailwind-merge: "npm:^2.6.0"
+    tailwindcss: "npm:^4.3.0"
+    typescript: "npm:^6.0.2"
+    vite: "npm:^8.0.0"
+    zod: "npm:^3.24.2"
+  languageName: unknown
+  linkType: soft
+
 "fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
   version: 2.3.3
   resolution: "fsevents@npm:2.3.3"
@@ -2687,36 +2717,6 @@ __metadata:
   checksum: 10c0/4cde389ee5e9132e7ef90e4c1d05978d52821761a00700c18b7d46d325881086f0a9c9ec7f616929ecd6e26109c41913538883e066c6dd4bd993debbbbc99084
   languageName: node
   linkType: hard
-
-"tanstack-start-example-basic@workspace:frontend":
-  version: 0.0.0-use.local
-  resolution: "tanstack-start-example-basic@workspace:frontend"
-  dependencies:
-    "@tailwindcss/postcss": "npm:^4.3.0"
-    "@tailwindcss/vite": "npm:^4.2.2"
-    "@tanstack/react-query": "npm:^5.100.10"
-    "@tanstack/react-router": "npm:^1.169.2"
-    "@tanstack/react-router-devtools": "npm:^1.166.13"
-    "@tanstack/react-start": "npm:^1.167.65"
-    "@types/node": "npm:^22.5.4"
-    "@types/react": "npm:^19.0.8"
-    "@types/react-dom": "npm:^19.0.3"
-    "@vitejs/plugin-react": "npm:^6.0.1"
-    autoprefixer: "npm:^10.5.0"
-    framer-motion: "npm:^12.38.0"
-    lucide-react: "npm:^1.14.0"
-    nitro: "npm:^3.0.260311-beta"
-    postcss: "npm:^8.5.14"
-    react: "npm:^19.0.0"
-    react-dom: "npm:^19.0.0"
-    recharts: "npm:^3.8.1"
-    tailwind-merge: "npm:^2.6.0"
-    tailwindcss: "npm:^4.3.0"
-    typescript: "npm:^6.0.2"
-    vite: "npm:^8.0.0"
-    zod: "npm:^3.24.2"
-  languageName: unknown
-  linkType: soft
 
 "tapable@npm:^2.3.3":
   version: 2.3.3
