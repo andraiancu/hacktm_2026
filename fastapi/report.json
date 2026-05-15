@@ -1,8 +1,8 @@
 {
   "directory": "C:\\Users\\Tudor\\repos\\hacktm_2026\\fastapi\\img",
-  "images_scanned": 6,
-  "faces_detected": 6,
-  "analyzed_faces": 6,
+  "images_scanned": 5,
+  "faces_detected": 5,
+  "analyzed_faces": 5,
   "pose_coverage": {
     "yaw_bins": [
       "-30_to_30",
@@ -20,12 +20,12 @@
     "coverage_ratio": 0.7777777777777778
   },
   "resolution_quality": {
-    "average_face_area": 24493.166666666668,
-    "average_face_ratio": 0.016672609490081276,
-    "average_sharpness": 925.4205520300119,
-    "quality_score": 0.3628314557825758
+    "average_face_area": 26601.8,
+    "average_face_ratio": 0.018169767708628586,
+    "average_sharpness": 652.128401604047,
+    "quality_score": 0.37775243134485903
   },
-  "score": 61.179924897969705,
+  "score": 61.77676392046103,
   "risk": "Moderate Risk",
   "hardware": {
     "cuda_available": false,
@@ -36,6 +36,6 @@
     ],
     "cpu_only_enforced": true
   },
-  "elapsed_seconds": 1.4241507053375244,
+  "elapsed_seconds": 1.5176539421081543,
   "warnings": []
 }
